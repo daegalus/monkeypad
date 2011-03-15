@@ -1,0 +1,5 @@
+syntax: glob
+MonkeyPad/Bin
+MonkeyPad/obj
+.git
+Misc
