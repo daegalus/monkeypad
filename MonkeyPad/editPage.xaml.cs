@@ -144,7 +144,7 @@ namespace MonkeyPad
         private void saveButton_clicked(object sender, EventArgs e)
         {
 
-            if (currentNote.Content != noteTextBox.Text)
+            if (currentNote.Content != noteTextBox.Text && App.ViewModel.sendUpdateDone)
             {
                 Models.editNoteModel note = new Models.editNoteModel();
                 noteTextBox.Text = noteTextBox.Text.Replace('\r', '\n');
@@ -272,7 +272,7 @@ namespace MonkeyPad
         {
             try
             {
-                
+
                 if (noteObject.Content != null)
                 {
                     currentNote.Content = noteObject.Content;
@@ -281,88 +281,88 @@ namespace MonkeyPad
                 {
                     currentNote.Content = currentNoteBox;
                 }
-                    currentNote.Deleted = noteObject.Deleted;
-                    currentNote.MinVersion = noteObject.MinVersion;
-                    currentNote.SyncNum = noteObject.SyncNum;
-                    currentNote.Tags = noteObject.Tags;
-                    currentNote.SystemTags = noteObject.SystemTags;
-                    currentNote.Version = noteObject.Version;
-                    currentNote.ModifyDate = noteObject.ModifyDate;
-                    Models.SortableObservableCollection<Models.noteModel> collection = null;
-                    if (currentNote.SystemTags.Length != 0)
+                currentNote.Deleted = noteObject.Deleted;
+                currentNote.MinVersion = noteObject.MinVersion;
+                currentNote.SyncNum = noteObject.SyncNum;
+                currentNote.Tags = noteObject.Tags;
+                currentNote.SystemTags = noteObject.SystemTags;
+                currentNote.Version = noteObject.Version;
+                currentNote.ModifyDate = noteObject.ModifyDate;
+                Models.SortableObservableCollection<Models.noteModel> collection = null;
+                if (currentNote.SystemTags.Length != 0)
+                {
+                    if (currentNote.SystemTags[0] == "pinned")
                     {
-                        if (currentNote.SystemTags[0] == "pinned")
-                        {
-                            collection = App.ViewModel.pinned;
-                        }
+                        collection = App.ViewModel.pinned;
                     }
-                    else if (currentNote.Deleted == true)
-                    {
-                        collection = App.ViewModel.trashed;
-                    }
-                    else
-                    {
-                        collection = App.ViewModel.notes;
-                    }
-                
-                    foreach (Models.noteModel item in collection)
-                    {
-                        if (item.Key == currentNote.Key)
-                        {
-                            item.ModifyDate = currentNote.ModifyDate;
-                            System.DateTime date = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-                            String _title = "", _text = "", _temptext = "";
-                            String[] firstLines = currentNote.Content.Trim().Split('\n');
-                            if (firstLines[0].Length >= 23)
-                            {
-                                _title = firstLines[0].Substring(0, 23) + "...";
-                            }
-                            else
-                            {
-                                _title = firstLines[0];
-                            }
-                            _temptext = currentNote.Content.Replace('\n', ' ');
-                            if (firstLines[0] != "")
-                            {
-                                _temptext = _temptext.Replace(firstLines[0], "");
-                            }
-                            _temptext = _temptext.Trim();
-                            if (_temptext.Length == 0)
-                            {
-                                _text = " ";
-                            }
-                            else if (_temptext.Length > 40)
-                            {
+                }
+                else if (currentNote.Deleted == true)
+                {
+                    collection = App.ViewModel.trashed;
+                }
+                else
+                {
+                    collection = App.ViewModel.notes;
+                }
 
-                                _text = _temptext.Substring(0, 40).Trim() + "...";
-                            }
-                            else
-                            {
-                                _text = _temptext;
-                            }
-                            date = date.AddSeconds((double)currentNote.ModifyDate);
-                            item.Content = currentNote.Content;
-                            item.Deleted = currentNote.Deleted;
-                            item.MinVersion = currentNote.MinVersion;
-                            item.ModifyDate = currentNote.ModifyDate;
-                            item.PublishKey = currentNote.PublishKey;
-                            item.ShareKey = currentNote.ShareKey;
-                            item.SyncNum = currentNote.SyncNum;
-                            item.SystemTags = currentNote.SystemTags;
-                            item.Tags = currentNote.Tags;
-                            item.Version = currentNote.Version;
-                            object[] array = new object[2];
-                            array[0] = item;
-                            array[1] = date;
-                            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((item2) => { item2.DisplayTitle = _title; }), item);
-                            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((item2) => { item2.DisplayContent = _text; }), item);
-                            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel,System.DateTime>((item2,date2) => { item2.DisplayDate = App.ViewModel.MonthAbr[date2.Month] + " " + date2.Day; }), array);
+                foreach (Models.noteModel item in collection)
+                {
+                    if (item.Key == currentNote.Key)
+                    {
+                        item.ModifyDate = currentNote.ModifyDate;
+                        System.DateTime date = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+                        String _title = "", _text = "", _temptext = "";
+                        String[] firstLines = currentNote.Content.Trim().Split('\n');
+                        if (firstLines[0].Length >= 23)
+                        {
+                            _title = firstLines[0].Substring(0, 23) + "...";
                         }
-                    }
-                    App.ViewModel.sortAll();
-                    ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { ((App)App.Current).RootFrame.GoBack(); });
+                        else
+                        {
+                            _title = firstLines[0];
+                        }
+                        _temptext = currentNote.Content.Replace('\n', ' ');
+                        if (firstLines[0] != "")
+                        {
+                            _temptext = _temptext.Replace(firstLines[0], "");
+                        }
+                        _temptext = _temptext.Trim();
+                        if (_temptext.Length == 0)
+                        {
+                            _text = " ";
+                        }
+                        else if (_temptext.Length > 40)
+                        {
 
-                
+                            _text = _temptext.Substring(0, 40).Trim() + "...";
+                        }
+                        else
+                        {
+                            _text = _temptext;
+                        }
+                        date = date.AddSeconds((double)currentNote.ModifyDate);
+                        item.Content = currentNote.Content;
+                        item.Deleted = currentNote.Deleted;
+                        item.MinVersion = currentNote.MinVersion;
+                        item.ModifyDate = currentNote.ModifyDate;
+                        item.PublishKey = currentNote.PublishKey;
+                        item.ShareKey = currentNote.ShareKey;
+                        item.SyncNum = currentNote.SyncNum;
+                        item.SystemTags = currentNote.SystemTags;
+                        item.Tags = currentNote.Tags;
+                        item.Version = currentNote.Version;
+                        object[] array = new object[2];
+                        array[0] = item;
+                        array[1] = date;
+                        ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((item2) => { item2.DisplayTitle = _title; }), item);
+                        ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((item2) => { item2.DisplayContent = _text; }), item);
+                        ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel, System.DateTime>((item2, date2) => { item2.DisplayDate = App.ViewModel.MonthAbr[date2.Month] + " " + date2.Day; }), array);
+                    }
+                }
+                App.ViewModel.sortAll();
+                ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { ((App)App.Current).RootFrame.GoBack(); });
+
+
             }
             catch (WebException ee)
             {
@@ -393,6 +393,10 @@ namespace MonkeyPad
                 {
                     ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error updating note. Please check that you are connected and try again."); });
                 }
+            }
+            catch (NullReferenceException eee)
+            {
+                
             }
         }
     }

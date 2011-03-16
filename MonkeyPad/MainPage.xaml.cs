@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
-using Microsoft.Advertising.Mobile.UI;
+//using Microsoft.Advertising.Mobile.UI;
 using System.Windows.Navigation;
 
 namespace MonkeyPad
@@ -26,7 +26,8 @@ namespace MonkeyPad
         public bool adAdded = false;
         Style style = (Style)App.Current.Resources["PerformanceProgressBar"];
         ProgressBar bar = new ProgressBar();
-        AdControl adControl = null;
+        //AdControl adControl2 = null;
+        Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd adControl = null;
         
         // Constructor
         public MainPage()
@@ -40,9 +41,15 @@ namespace MonkeyPad
             startLoadingBar();
             if (App.IsTrial())
             {
-                adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
+                /*adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
                 adControl.Width = 480;
-                adControl.Height = 80;
+                adControl.Height = 80;*/
+                
+                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd {
+                    AdUnitID = "a14d80621cca948"
+                };
+                //adControl.TestDeviceIDs.Add("
+            
             }
             if (!App.ViewModel.IsDataLoaded)
             {

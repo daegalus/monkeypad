@@ -42,7 +42,6 @@ namespace MonkeyPad
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        public bool isAppATrial = false;
         /// <summary>
         /// Constructor for the Application object.
         /// </summary>

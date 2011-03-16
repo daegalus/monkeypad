@@ -50,20 +50,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AldarIT.SuperAds">
-      <HintPath>..\..\SuperAds.1.0.922\AldarIT.SuperAds.dll</HintPath>
+    <Reference Include="Google.AdMob.Ads.WindowsPhone7">
+      <HintPath>..\..\..\Libraries\Google.AdMob.Ads.WindowsPhone7.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib.WindowsPhone, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\ICSharpCode.SharpZipLib.WindowsPhone.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib.WindowsPhone">
+      <HintPath>..\..\..\Libraries\ICSharpCode.SharpZipLib.WindowsPhone.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Advertising.Mobile.UI, Version=2.1.11120.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Newtonsoft.Json.Silverlight, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\..\Newtonsoft.Json.Silverlight.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.Silverlight">
+      <HintPath>..\..\..\Libraries\Newtonsoft.Json.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -72,7 +71,7 @@
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
     <Reference Include="Wintellect.Threading.WindowsPhone">
-      <HintPath>..\..\Wintellect.Threading.WindowsPhone.dll</HintPath>
+      <HintPath>..\..\..\Libraries\Wintellect.Threading.WindowsPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +185,6 @@
     <Content Include="icons\appbar.undelete.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Microsoft.Advertising.Mobile.UI.dll" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

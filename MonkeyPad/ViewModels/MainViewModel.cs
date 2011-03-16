@@ -56,7 +56,6 @@ namespace MonkeyPad
         public bool sendUpdateDone = true;
         JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
         public int counter = 0;
-        public AldarIT.SuperAds.AdControl ad = null;
 
         /* Note Variables */
         public string returnedJson = "";
@@ -742,7 +741,6 @@ namespace MonkeyPad
                 asyncEnum.EndExecute(result);
                 Models.noteModel noteObject = JsonConvert.DeserializeObject<Models.noteModel>(returnedJson);
                 processResponse(noteObject, workingItem);
-                Thread.Sleep(1000);
                 App.ViewModel.sendUpdateDone = true;
             }));
         }
@@ -783,7 +781,6 @@ namespace MonkeyPad
                 asyncEnum.EndExecute(result);
                 Models.noteModel noteObject = JsonConvert.DeserializeObject<Models.noteModel>(returnedJson);
                 processResponse(noteObject, workingItem);
-                Thread.Sleep(1000);
                 App.ViewModel.sendUpdateDone = true;
             }));
         }
