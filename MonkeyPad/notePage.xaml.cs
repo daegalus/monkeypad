@@ -11,7 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Microsoft.Advertising.Mobile.UI;
+//using Microsoft.Advertising.Mobile.UI;
 
 namespace MonkeyPad
 {
@@ -22,15 +22,20 @@ namespace MonkeyPad
         bool pinned = false;
         bool trashed = false;
         bool adAdded = false;
-        AdControl adControl = null;
+        //AdControl adControl2 = null;
+        Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd adControl = null;
         public noteView()
         {
             InitializeComponent();
             if (App.IsTrial())
             {
-                adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
+                /*adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
                 adControl.Width = 480;
-                adControl.Height = 80;
+                adControl.Height = 80;*/
+                
+                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd {
+                    AdUnitID = "a14d80621cca948"
+                };
             }
             this.LayoutUpdated += new EventHandler(updateUI);
         }
@@ -50,6 +55,7 @@ namespace MonkeyPad
                 Grid grid = (Grid)this.LayoutRoot.Children[2];
                 grid.Children.Add(adControl);
                 scrollViewer1.Height = 497;
+                adAdded = true;
             }
             String noteKey = "";
             UpdateLayout();
@@ -158,13 +164,18 @@ namespace MonkeyPad
 
         private void editButton_clicked(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/editPage.xaml?key=" + savedNote.Key + "&list=" + list, UriKind.Relative));
+            if (App.ViewModel.sendUpdateDone)
+            {
+                NavigationService.Navigate(new Uri("/editPage.xaml?key=" + savedNote.Key + "&list=" + list, UriKind.Relative));
+            }
         }
 
         private void pinButton_clicked(object sender, EventArgs e)
         {
+            
             if (!pinned && App.ViewModel.sendUpdateDone)
             {
+                App.ViewModel.sendUpdateDone = false;
                 pinned = true;
                 list = "pinned";
                 App.ViewModel.pinItem(savedNote.Key);
@@ -181,6 +192,7 @@ namespace MonkeyPad
         {
             if (pinned && App.ViewModel.sendUpdateDone)
             {
+                App.ViewModel.sendUpdateDone = false;
                 pinned = false;
                 if (savedNote.Deleted == true)
                 {
@@ -204,6 +216,7 @@ namespace MonkeyPad
         {
             if (!trashed && App.ViewModel.sendUpdateDone)
             {
+                App.ViewModel.sendUpdateDone = false;
                 trashed = true;
                 list = "trashed";
                 App.ViewModel.trashItem(savedNote.Key);
@@ -224,6 +237,7 @@ namespace MonkeyPad
         {
             if (trashed && App.ViewModel.sendUpdateDone)
             {
+                App.ViewModel.sendUpdateDone = false;
                 trashed = false;
                 if (savedNote.SystemTags != null && savedNote.SystemTags.Length > 1 && savedNote.SystemTags[0] != "pinned")
                 {
