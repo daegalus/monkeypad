@@ -82,6 +82,7 @@ namespace MonkeyPad
             }
 			else if (!App.ViewModel.IsLoggedIn && !App.ViewModel.HasBeenToLogin)
 			{
+                App.ViewModel.loading = false;
 				NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
 			}
             else if (App.ViewModel.HasEnteredLoginInfo && !App.ViewModel.IsDataLoaded && App.ViewModel.authToken != "")
