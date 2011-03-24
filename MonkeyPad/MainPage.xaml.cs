@@ -347,6 +347,20 @@ namespace MonkeyPad
                 ApplicationBarMenuItem appMenuItem = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
                 appMenuItem.IsEnabled = true;
             }
+            if (App.ViewModel.refreshing)
+            {
+                ApplicationBarIconButton appButton2 = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+                appButton2.IsEnabled = false;
+                ApplicationBarMenuItem appMenuItem = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
+                appMenuItem.IsEnabled = false;
+            }
+            else
+            {
+                ApplicationBarIconButton appButton2 = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+                appButton2.IsEnabled = true;
+                ApplicationBarMenuItem appMenuItem = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
+                appMenuItem.IsEnabled = true;
+            }
         }
 
         private void logout_clicked(object sender, EventArgs e)
