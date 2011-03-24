@@ -54,6 +54,7 @@ namespace MonkeyPad
         public bool loading { get; set; }
         public bool alreadyAdded { get; set; }
         public bool sendUpdateDone = true;
+        public bool refreshing { get; set; }
         JsonSerializerSettings jsonSettings = new JsonSerializerSettings();
         public int counter = 0;
 
@@ -79,7 +80,7 @@ namespace MonkeyPad
                 if (firstLoadLogin)
                 {
                     AsyncEnumerator asyncEnum = new AsyncEnumerator();
-
+                    refreshing = true;
                     IsolatedStorageSettings iss = IsolatedStorageSettings.ApplicationSettings;
                     if ((!iss.Contains("authToken") || authToken == "") && HasEnteredLoginInfo && !IsLoggedIn)
                     {
@@ -97,6 +98,7 @@ namespace MonkeyPad
                                     {
                                         asyncEnum3.EndExecute(result3);
                                         loading = false;
+                                        refreshing = false;
                                         updateUI();
                                     }
                                     catch (InvalidOperationException e)
@@ -115,9 +117,17 @@ namespace MonkeyPad
                             AsyncEnumerator asyncEnum2 = new AsyncEnumerator();
                             asyncEnum2.BeginExecute(updateData(asyncEnum2), new AsyncCallback((result2) =>
                             {
-                                asyncEnum2.EndExecute(result2);
-                                loading = false;
-                                updateUI();
+                                try
+                                {
+                                    asyncEnum2.EndExecute(result2);
+                                    loading = false;
+                                    refreshing = false;
+                                    updateUI();
+                                }
+                                catch (InvalidOperationException e)
+                                {
+
+                                }
                             }));
                         }));
                     }
@@ -192,6 +202,7 @@ namespace MonkeyPad
                     App.ViewModel.HasBeenToLogin = false;
                     App.ViewModel.HasEnteredLoginInfo = false;
                     App.ViewModel.loading = false;
+                    App.ViewModel.refreshing = false;
                     App.ViewModel.authToken = "";
                     if (iss.Contains("authToken"))
                     {
@@ -218,6 +229,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -300,6 +312,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -330,6 +343,7 @@ namespace MonkeyPad
                             App.ViewModel.HasBeenToLogin = false;
                             App.ViewModel.HasEnteredLoginInfo = false;
                             App.ViewModel.loading = false;
+                            App.ViewModel.refreshing = false;
                             App.ViewModel.authToken = "";
                             if (iss.Contains("authToken"))
                             {
@@ -481,6 +495,7 @@ namespace MonkeyPad
                                 App.ViewModel.HasBeenToLogin = false;
                                 App.ViewModel.HasEnteredLoginInfo = false;
                                 App.ViewModel.loading = false;
+                                App.ViewModel.refreshing = false;
                                 App.ViewModel.authToken = "";
                                 if (iss.Contains("authToken"))
                                 {
@@ -848,6 +863,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -911,6 +927,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -1059,6 +1076,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -1142,6 +1160,7 @@ namespace MonkeyPad
                         App.ViewModel.HasBeenToLogin = false;
                         App.ViewModel.HasEnteredLoginInfo = false;
                         App.ViewModel.loading = false;
+                        App.ViewModel.refreshing = false;
                         App.ViewModel.authToken = "";
                         if (iss.Contains("authToken"))
                         {
@@ -1270,6 +1289,7 @@ namespace MonkeyPad
                                 App.ViewModel.HasBeenToLogin = false;
                                 App.ViewModel.HasEnteredLoginInfo = false;
                                 App.ViewModel.loading = false;
+                                App.ViewModel.refreshing = false;
                                 App.ViewModel.authToken = "";
                                 if (iss.Contains("authToken"))
                                 {
@@ -1353,26 +1373,36 @@ namespace MonkeyPad
 
         public void refreshData()
         {
-            if (!loading)
+            if (!loading && !refreshing)
             {
+                refreshing = true;
                 loading = true;
                 refreshUpdate = true;
                 AsyncEnumerator asyncEnum = new AsyncEnumerator();
                 asyncEnum.BeginExecute(updateData(asyncEnum), new AsyncCallback((result) =>
                 {
-                    asyncEnum.EndExecute(result);
-                    //updateUI();
-                    IsSorted = true;
-                    loading = false;
-                    refreshUpdate = false;
+                    try
+                    {
+                        asyncEnum.EndExecute(result);
+                        //updateUI();
+                        IsSorted = true;
+                        loading = false;
+                        refreshUpdate = false;
+                        refreshing = false;
+                    }
+                    catch (InvalidOperationException e)
+                    {
+
+                    }
                 }));
             }
         }
 
         public void refreshAll()
         {
-            if (!loading)
+            if (!loading && !refreshing)
             {
+                refreshing = true;
                 loading = true;
                 clearLists();
 
@@ -1383,9 +1413,17 @@ namespace MonkeyPad
                     AsyncEnumerator asyncEnum2 = new AsyncEnumerator();
                     asyncEnum2.BeginExecute(updateData(asyncEnum2), new AsyncCallback((result2) =>
                     {
-                        asyncEnum2.EndExecute(result2);
-                        loading = false;
-                        updateUI();
+                        try
+                        {
+                            asyncEnum2.EndExecute(result2);
+                            loading = false;
+                            updateUI();
+                            refreshing = false;
+                        }
+                        catch (InvalidOperationException e)
+                        {
+
+                        }
                     }));
                 }));
             }
