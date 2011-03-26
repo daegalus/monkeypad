@@ -53,9 +53,6 @@
     <Reference Include="AldarIT.SuperAds">
       <HintPath>..\..\..\Libraries\AldarIT.SuperAds.dll</HintPath>
     </Reference>
-    <Reference Include="AldarIT.SuperAds.LocationAware">
-      <HintPath>..\..\..\Libraries\AldarIT.SuperAds.LocationAware.dll</HintPath>
-    </Reference>
     <Reference Include="Google.AdMob.Ads.WindowsPhone7">
       <HintPath>..\..\..\Libraries\Google.AdMob.Ads.WindowsPhone7.dll</HintPath>
     </Reference>
@@ -67,8 +64,8 @@
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Newtonsoft.Json.WindowsPhone">
-      <HintPath>..\..\..\Libraries\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.Silverlight">
+      <HintPath>..\..\..\Libraries\Newtonsoft.Json.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -217,7 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons\appbar.check.rest black.png" />
-    <Resource Include="icons\appbar.feature.email.rest.png" />
+    <Resource Include="icons\appbar.feature.email.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

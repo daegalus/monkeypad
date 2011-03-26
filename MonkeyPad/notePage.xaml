@@ -118,6 +118,7 @@
 			<shell:ApplicationBarIconButton x:Name="editButton" IconUri="/icons/appbar.edit.rest.png" IsEnabled="True" Text="Edit" Click="editButton_clicked" />
 			<shell:ApplicationBarIconButton x:Name="pinButton" IsEnabled="True" Text="Pin" Click="pinButton_clicked" IconUri="/icons/appbar.favs.addto.rest.png" />
 			<shell:ApplicationBarIconButton x:Name="trashButton" IsEnabled="True" Text="Trash" IconUri="/icons/appbar.delete.rest.png"/>
+            <shell:ApplicationBarIconButton x:Name="emailButton" IconUri="/icons/appbar.feature.email.rest.png" IsEnabled="True" Text="Email" Click="emailButton_clicked" />
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
 

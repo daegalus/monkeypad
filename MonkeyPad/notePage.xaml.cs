@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 //using Microsoft.Advertising.Mobile.UI;
 
 namespace MonkeyPad
@@ -312,6 +313,14 @@ namespace MonkeyPad
                 ApplicationBarIconButton appButton3 = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
                 appButton3.IsEnabled = true;
             }
+        }
+
+        private void emailButton_clicked(object sender, EventArgs e)
+        {
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+            emailComposeTask.Body = savedNote.Content;
+            emailComposeTask.Subject = "[MonkeyPad Note] " + savedNote.DisplayTitle;
+            emailComposeTask.Show();
         }
                       
     }
