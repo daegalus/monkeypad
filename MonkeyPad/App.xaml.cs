@@ -75,7 +75,7 @@ namespace MonkeyPad
         public static bool IsTrial()
         {
             var license = new Microsoft.Phone.Marketplace.LicenseInformation();
-            return license.IsTrial();
+            return true;// license.IsTrial();
         }
 
         // Code to execute when the application is launching (eg, from Start)
