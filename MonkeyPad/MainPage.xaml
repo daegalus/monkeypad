@@ -103,15 +103,15 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
                             <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
+                                        <toolkit:MenuItem Header="Pin" Click="MenuItem_Click" Tag="{Binding Key}" />
+                                        <toolkit:MenuItem Header="Trash" Click="MenuItem_Click" Tag="{Binding Key}" />
+                                        <toolkit:MenuItem Header="Email" Click="MenuItem_Click" Tag="{Binding Key}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
 							    <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
 							    <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                    <!--<toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                            <toolkit:MenuItem Header="pin" Tag="pin" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="delete" Tag="delete" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="update" Tag="update" Click="MenuItem_Click" FontFamily="Candara" />
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>-->
                                         <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
                                         <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
                                             <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
@@ -133,15 +133,15 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
                             <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
+                                        <toolkit:MenuItem Header="Unpin" Click="MenuItem2_Click" Tag="{Binding Key}" />
+                                        <toolkit:MenuItem Header="Trash" Click="MenuItem2_Click" Tag="{Binding Key}" />
+                                        <toolkit:MenuItem Header="Email" Click="MenuItem2_Click" Tag="{Binding Key}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
                                 <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                    <!--<toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                            <toolkit:MenuItem Header="pin" Tag="pin" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="delete" Tag="delete" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="update" Tag="update" Click="MenuItem_Click" FontFamily="Candara" />
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>-->
                                     <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
                                         <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
                                             <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
@@ -163,15 +163,14 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
                             <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
+                                        <toolkit:MenuItem Header="Restore" Click="MenuItem3_Click" Tag="{Binding Key}" />
+                                        <toolkit:MenuItem Header="Email" Click="MenuItem3_Click" Tag="{Binding Key}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
                                 <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                    <!--<toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                            <toolkit:MenuItem Header="pin" Tag="pin" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="delete" Tag="delete" Click="MenuItem_Click" FontFamily="Candara" />
-                                            <toolkit:MenuItem Header="update" Tag="update" Click="MenuItem_Click" FontFamily="Candara" />
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>-->
                                     <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
                                         <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
                                             <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>

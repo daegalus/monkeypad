@@ -27,6 +27,7 @@ namespace MonkeyPad
         Style style = (Style)App.Current.Resources["PerformanceProgressBar"];
         ProgressBar bar = new ProgressBar();
         //AdControl adControl2 = null;
+        //AldarIT.SuperAds.AdControl adControl = null;
         Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd adControl = null;
         
         // Constructor
@@ -49,7 +50,25 @@ namespace MonkeyPad
                     AdUnitID = "a14d80621cca948"
                 };
                 //adControl.TestDeviceIDs.Add("
-            
+                /*adControl = new AldarIT.SuperAds.AdControl();
+
+                AldarIT.SuperAds.AdProviders.AdmobAdProvider adMobProvider = new AldarIT.SuperAds.AdProviders.AdmobAdProvider();
+                AldarIT.SuperAds.AdProviders.MobFoxAdProvider mobFoxProvider = new AldarIT.SuperAds.AdProviders.MobFoxAdProvider();
+                AldarIT.SuperAds.AdProviders.SmaatoAdProvider smaatoProvider = new AldarIT.SuperAds.AdProviders.SmaatoAdProvider();
+
+                adMobProvider.PublisherID = "a14d80621cca948";
+                mobFoxProvider.PublisherID = "0e3ca65355a3c9b3febf28b85de5c761";
+                smaatoProvider.AdSpaceID = 65738354;
+                smaatoProvider.PublisherID = 923835548;
+
+                adControl.AdProviders.Add(adMobProvider);
+                adControl.AdProviders.Add(mobFoxProvider);
+                adControl.AdProviders.Add(smaatoProvider);
+
+                adControl.Height = 75;
+                adControl.Stretch = Stretch.Uniform;
+                adControl.TestMode = true;*/
+                
             }
             if (!App.ViewModel.IsDataLoaded)
             {
@@ -66,7 +85,7 @@ namespace MonkeyPad
                // Ads.Visibility = System.Windows.Visibility.Visible;
                 Grid grid = (Grid)this.LayoutRoot.Children[3];
                 grid.Children.Add(adControl);
-                System.Windows.Thickness margin = new System.Windows.Thickness(0,0,0,80);
+                System.Windows.Thickness margin = new System.Windows.Thickness(0,0,0,75);
                 pivotContainer.Margin = margin;
                 adAdded = true;
             }
@@ -249,37 +268,102 @@ namespace MonkeyPad
         {
             NavigationService.Navigate(new Uri("/aboutPage.xaml", UriKind.Relative));
         }
+
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
-            var tag = menuItem.Tag.ToString();
-            ListBox listBox = menuItem.DataContext as ListBox;// (ListBox) VisualTreeHelper.GetParent((sender as DependencyObject));
-            var selectedItem = notesListBox.SelectedItem;
-            
-            if (listBox.SelectedIndex > -1)
+            string header = (sender as MenuItem).Header.ToString();
+            ListBoxItem selectedListBox = this.notesListBox.ItemContainerGenerator.ContainerFromItem((sender as MenuItem).DataContext) as ListBoxItem;
+            if (selectedListBox == null)
             {
-                Models.noteModel item = App.ViewModel.notes[listBox.SelectedIndex];
-                if (tag == "pin")
+                return;
+            }
+            Models.noteModel note = (Models.noteModel)selectedListBox.Content;
+            if (header == "Pin")
+            {
+                if (App.ViewModel.sendUpdateDone)
                 {
-                    App.ViewModel.pinItem(item.Key);
-                }
-                /*else if (tag == "trash")
-                {
-                    trashItem(item.Key);
-                }
-                else if (tag == "permdelete")
-                {
-                    permaDeleteItem(item.Key);
-                }
-                else if (tag == "update")
-                {
-                    updateItem(item.Key);
-                }*/
-                else
-                {
-                    MessageBox.Show("Error 72");
+                    App.ViewModel.sendUpdateDone = false;
+                    App.ViewModel.pinItem(note.Key);
                 }
             }
+            else if (header == "Trash")
+            {
+                if (App.ViewModel.sendUpdateDone)
+                {
+                    App.ViewModel.sendUpdateDone = false;
+                    App.ViewModel.trashItem(note.Key);
+                }
+            }
+            else if (header == "Email")
+            {
+                EmailComposeTask emailComposeTask = new EmailComposeTask();
+                emailComposeTask.Body = note.Content;
+                emailComposeTask.Subject = "[MonkeyPad Note] " + note.DisplayTitle;
+                emailComposeTask.Show();
+            }
+
+        }
+
+        private void MenuItem2_Click(object sender, RoutedEventArgs e)
+        {
+            string header = (sender as MenuItem).Header.ToString();
+            ListBoxItem selectedListBox = this.pinnedListBox.ItemContainerGenerator.ContainerFromItem((sender as MenuItem).DataContext) as ListBoxItem;
+            if (selectedListBox == null)
+            {
+                return;
+            }
+            Models.noteModel note = (Models.noteModel)selectedListBox.Content;
+            if (header == "Unpin")
+            {
+                if (App.ViewModel.sendUpdateDone)
+                {
+                    App.ViewModel.sendUpdateDone = false;
+                    App.ViewModel.unpinItem(note.Key);
+                }
+            }
+            else if (header == "Trash")
+            {
+                if (App.ViewModel.sendUpdateDone)
+                {
+                    App.ViewModel.sendUpdateDone = false;
+                    App.ViewModel.trashItem(note.Key);
+                }
+            }
+            else if (header == "Email")
+            {
+                EmailComposeTask emailComposeTask = new EmailComposeTask();
+                emailComposeTask.Body = note.Content;
+                emailComposeTask.Subject = "[MonkeyPad Note] " + note.DisplayTitle;
+                emailComposeTask.Show();
+            }
+
+        }
+
+        private void MenuItem3_Click(object sender, RoutedEventArgs e)
+        {
+            string header = (sender as MenuItem).Header.ToString();
+            ListBoxItem selectedListBox = this.trashListBox.ItemContainerGenerator.ContainerFromItem((sender as MenuItem).DataContext) as ListBoxItem;
+            if (selectedListBox == null)
+            {
+                return;
+            }
+            Models.noteModel note = (Models.noteModel)selectedListBox.Content;
+            if (header == "Restore")
+            {
+                if (App.ViewModel.sendUpdateDone)
+                {
+                    App.ViewModel.sendUpdateDone = false;
+                    App.ViewModel.untrashItem(note.Key);
+                }
+            }
+            else if (header == "Email")
+            {
+                EmailComposeTask emailComposeTask = new EmailComposeTask();
+                emailComposeTask.Body = note.Content;
+                emailComposeTask.Subject = "[MonkeyPad Note] " + note.DisplayTitle;
+                emailComposeTask.Show();
+            }
+
         }
 
         public void updateUIs(object sender, EventArgs e)
