@@ -445,6 +445,10 @@ namespace MonkeyPad
                 ApplicationBarMenuItem appMenuItem = (ApplicationBarMenuItem)ApplicationBar.MenuItems[0];
                 appMenuItem.IsEnabled = true;
             }
+            if (App.ViewModel.tags != null && pivotContainer.Items.Count == 3)
+            {
+                showTags();
+            }
         }
 
         private void logout_clicked(object sender, EventArgs e)
@@ -498,6 +502,60 @@ namespace MonkeyPad
             MarketplaceDetailTask details = new MarketplaceDetailTask();
             details.ContentIdentifier = null;
             details.Show(); 
+        }
+
+        private void tagButton_clicked(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void showTags()
+        {
+            foreach(Models.tagModel tagItem in App.ViewModel.tags)
+            {
+                tagItem.visible = true;
+                if (tagItem.visible)
+                {
+                    PivotItem newTagPivot = new PivotItem();
+                    newTagPivot.Header = "#"+tagItem.tagName.ToLower();
+                    newTagPivot.Margin = new Thickness(0, 8, 0, 0);
+                    Color grey = new Color();
+                    grey.A = 255;
+                    grey.R = 241;
+                    grey.G = 241;
+                    grey.B = 241;
+                    newTagPivot.Background = new SolidColorBrush(grey);
+                    ListBox newListBox = new ListBox();
+                    newListBox.ItemsSource = tagItem.notes;
+                    newListBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                    newListBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                    newListBox.Margin = new Thickness(12, 0, 0, 0);
+                    newListBox.Height = 537;
+                    newListBox.ItemTemplate = noteModelTemplate;
+                    newListBox.ItemContainerStyle = ListBoxItemStyle1;
+                    newListBox.SelectionChanged += new SelectionChangedEventHandler(tagSelection);
+                    newListBox.Name = tagItem.tagName + "ListBox";
+                    newTagPivot.Content = newListBox;
+                    pivotContainer.Items.Add(newTagPivot);
+                }
+            }
+        }
+
+        private void tagSelection(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            if (listBox.SelectedIndex > -1)
+            {
+                foreach (Models.tagModel tagItem in App.ViewModel.tags)
+                {
+                    if (listBox.SelectedItem.Equals(tagItem))
+                    {
+                        Models.noteModel item = tagItem.notes[listBox.SelectedIndex];
+                        NavigationService.Navigate(new Uri("/notePage.xaml?key=" + item.Key + "&type=tag", UriKind.Relative));
+                        listBox.SelectedIndex = -1;
+                    }
+                }
+            }
         }
     }
 }

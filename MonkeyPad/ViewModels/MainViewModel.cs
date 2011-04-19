@@ -41,6 +41,7 @@ namespace MonkeyPad
         public Models.SortableObservableCollection<Models.noteModel> notes { get; set; }
         public Models.SortableObservableCollection<Models.noteModel> pinned { get; set; }
         public Models.SortableObservableCollection<Models.noteModel> trashed { get; set; }
+        public Models.SortableObservableCollection<Models.tagModel> tags { get; set; }
         
         /* Other Variables */
 		public bool IsDataLoaded { get; set; }
@@ -99,6 +100,7 @@ namespace MonkeyPad
                                         asyncEnum3.EndExecute(result3);
                                         loading = false;
                                         refreshing = false;
+                                        getTags();
                                         updateUI();
                                     }
                                     catch (InvalidOperationException e)
@@ -122,6 +124,7 @@ namespace MonkeyPad
                                     asyncEnum2.EndExecute(result2);
                                     loading = false;
                                     refreshing = false;
+                                    getTags();
                                     updateUI();
                                 }
                                 catch (InvalidOperationException e)
@@ -1427,6 +1430,54 @@ namespace MonkeyPad
                     }));
                 }));
             }
+        }
+
+        public void getTags()
+        {
+            if (noteIndex != null && noteIndex.Data != null)
+            {
+                foreach (Models.noteModel note in noteIndex.Data)
+                {
+                    if (note.Tags.Length > 0)
+                    {
+                        foreach (string tag in note.Tags)
+                        {
+                            Models.tagModel rTagItem = checkForTag(tag);
+                            if (rTagItem == null)
+                            {
+                                Models.tagModel tagItem = new Models.tagModel();
+                                tagItem.tagName = tag;
+                                tagItem.notes = new Models.SortableObservableCollection<Models.noteModel>();
+                                tagItem.notes.Add(note);
+                                if (tags == null)
+                                {
+                                    tags = new Models.SortableObservableCollection<Models.tagModel>();
+                                }
+                                tags.Add(tagItem);
+                            }
+                            else
+                            {
+                                rTagItem.notes.Add(note);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private Models.tagModel checkForTag(string tag)
+        {
+            if (tags != null)
+            {
+                foreach (Models.tagModel tagItem in tags)
+                {
+                    if (tagItem.tagName == tag)
+                    {
+                        return tagItem;
+                    }
+                }
+            }
+            return null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
