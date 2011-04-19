@@ -17,14 +17,30 @@
 	SupportedOrientations="Portrait" Orientation="Portrait"
 	shell:SystemTray.IsVisible="True" local:TiltEffect.IsTiltEnabled="True" Background="#FFD2D2D2" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" Foreground="#FF222222">
 	<phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="noteModelTemplate">
-			<StackPanel>
-				<TextBlock x:Name="textBlock" Text="{Binding DisplayTitle}"/>
-				<TextBlock x:Name="textBlock1" Text="{Binding DisplayDate}"/>
-				<TextBlock x:Name="textBlock2" Text="{Binding DisplayContent}"/>
-			</StackPanel>
-		</DataTemplate>
-		<Style x:Key="ListBoxItemStyle1" TargetType="ListBoxItem">
+		<DataTemplate x:Name="noteModelTemplate">
+            <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
+                        <toolkit:MenuItem Header="Pin" Click="MenuItem_Click" Tag="{Binding Key}" />
+                        <toolkit:MenuItem Header="Trash" Click="MenuItem_Click" Tag="{Binding Key}" />
+                        <toolkit:MenuItem Header="Email" Click="MenuItem_Click" Tag="{Binding Key}" />
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+                <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
+                <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
+                    <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
+                        <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="date" TextWrapping="Wrap" Text="{Binding DisplayDate}" FontSize="18.667" HorizontalAlignment="Right" Foreground="#FF282828" Margin="0,5,0,0" Width="58" FontFamily="Candara" VerticalAlignment="Top"/>
+                        </StackPanel>
+                        <StackPanel x:Name="noteTextStackPanel" Width="448">
+                            <TextBlock x:Name="text" Text="{Binding DisplayContent}" TextWrapping="Wrap" Foreground="#FF4284D8" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Width="450" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+		<Style x:Name="ListBoxItemStyle1" TargetType="ListBoxItem">
 			<Setter Property="Background" Value="Transparent"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="BorderBrush" Value="Transparent"/>
@@ -90,6 +106,7 @@
 			<shell:ApplicationBarIconButton x:Name="newButton" IconUri="/icons/appbar.add.rest.png" Text="New" Click="newButton_clicked" />
 			<shell:ApplicationBarIconButton x:Name="syncButton" IconUri="/icons/appbar.sync.rest.png" IsEnabled="True" Text="reload all" Click="syncButton_clicked" />
             <shell:ApplicationBarIconButton x:Name="getButton" IconUri="/icons/appbar.download.rest.png" IsEnabled="False" Text="Get More" Click="getButton_clicked" />
+            <shell:ApplicationBarIconButton x:Name="tags" IconUri="/icons/appbar.tag.rest.png" IsEnabled="True" Text="Tags" Click="tagButton_clicked" />
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
 
@@ -98,108 +115,19 @@
 		<!--Pivot Control-->
 		<controls:Pivot x:Name="pivotContainer" Title=" " Background="{x:Null}" Foreground="#FF282828" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" Margin="0,0,0,0">
 			<controls:PivotItem x:Name="notesPivot" Header="notes" Margin="0,8,0,0" Background="#FFF1F1F1">
-<!--Triple line list no text wrapping-->
-                <ListBox x:Name="notesListBox" ItemsSource="{Binding notes}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="notesListBox_SelectionChanged">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-                            <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                        <toolkit:MenuItem Header="Pin" Click="MenuItem_Click" Tag="{Binding Key}" />
-                                        <toolkit:MenuItem Header="Trash" Click="MenuItem_Click" Tag="{Binding Key}" />
-                                        <toolkit:MenuItem Header="Email" Click="MenuItem_Click" Tag="{Binding Key}" />
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-							    <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
-							    <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                        <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
-                                        <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
-                                            <TextBlock x:Name="date" TextWrapping="Wrap" Text="{Binding DisplayDate}" FontSize="18.667" HorizontalAlignment="Right" Foreground="#FF282828" Margin="0,5,0,0" Width="58" FontFamily="Candara" VerticalAlignment="Top"/>
-                                        </StackPanel>
-                                        <StackPanel x:Name="noteTextStackPanel" Width="448">
-                                    	    <TextBlock x:Name="text" Text="{Binding DisplayContent}" TextWrapping="Wrap" Foreground="#FF4284D8" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Width="450" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara"/>
-                                        </StackPanel>
-								    </StackPanel>
-							    </StackPanel>
-                            </StackPanel>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
+                <ListBox x:Name="notesListBox" ItemsSource="{Binding notes}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="537" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="notesListBox_SelectionChanged" ItemTemplate="{StaticResource noteModelTemplate}"></ListBox>
 			</controls:PivotItem>
 			<controls:PivotItem x:Name="pinnedPivot" Header="pinned" Margin="0,8,0,0" Background="#FFF1F1F1">
-<!--Triple line list no text wrapping-->
-				<ListBox x:Name="pinnedListBox" ItemsSource="{Binding pinned}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="537" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="pinnedListBox_SelectionChanged">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-                            <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                        <toolkit:MenuItem Header="Unpin" Click="MenuItem2_Click" Tag="{Binding Key}" />
-                                        <toolkit:MenuItem Header="Trash" Click="MenuItem2_Click" Tag="{Binding Key}" />
-                                        <toolkit:MenuItem Header="Email" Click="MenuItem2_Click" Tag="{Binding Key}" />
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-                                <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
-                                <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                    <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
-                                        <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
-                                            <TextBlock x:Name="date" TextWrapping="Wrap" Text="{Binding DisplayDate}" FontSize="18.667" HorizontalAlignment="Right" Foreground="#FF282828" Margin="0,5,0,0" Width="58" FontFamily="Candara" VerticalAlignment="Top"/>
-                                        </StackPanel>
-                                        <StackPanel x:Name="noteTextStackPanel" Width="448">
-                                            <TextBlock x:Name="text" Text="{Binding DisplayContent}" TextWrapping="Wrap" Foreground="#FF4284D8" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Width="450" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
+                <ListBox x:Name="pinnedListBox" ItemsSource="{Binding pinned}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="537" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="pinnedListBox_SelectionChanged" ItemTemplate="{StaticResource noteModelTemplate}"></ListBox>
 			</controls:PivotItem>
 			<controls:PivotItem x:Name="trashPivot" Header="trash" Margin="0,8,0,0" Background="#FFF1F1F1">
-<!--Triple line list no text wrapping-->
-                <ListBox x:Name="trashListBox" ItemsSource="{Binding trashed}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="537" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="trashedListBox_SelectionChanged">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-                            <StackPanel x:Name="bordersNotes" Margin="0,5,0,10" Width="450" Orientation="Vertical">
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu FontFamily="Candara" IsZoomEnabled="False">
-                                        <toolkit:MenuItem Header="Restore" Click="MenuItem3_Click" Tag="{Binding Key}" />
-                                        <toolkit:MenuItem Header="Email" Click="MenuItem3_Click" Tag="{Binding Key}" />
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-                                <StackPanel x:Name="borderTop" Height="1" Background="White" HorizontalAlignment="Left" Width="450" Margin="0,1,0,0" VerticalAlignment="Top"/>
-                                <StackPanel x:Name="mainStackPanel" Margin="0,0,0,0" Orientation="Horizontal" Width="448">
-                                    <StackPanel x:Name="listItemStackPanel" Margin="0,0,0,0" Height="Auto" Width="448">
-                                        <StackPanel x:Name="titleDateStackPanel" Width="448" HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <TextBlock x:Name="title" Text="{Binding DisplayTitle}" TextWrapping="NoWrap" Foreground="#FF585858" Margin="0" Style="{StaticResource PhoneTextExtraLargeStyle}" FontSize="32" HorizontalAlignment="Left" Width="390" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" VerticalAlignment="Top"/>
-                                            <TextBlock x:Name="date" TextWrapping="Wrap" Text="{Binding DisplayDate}" FontSize="18.667" HorizontalAlignment="Right" Foreground="#FF282828" Margin="0,5,0,0" Width="58" FontFamily="Candara" VerticalAlignment="Top"/>
-                                        </StackPanel>
-                                        <StackPanel x:Name="noteTextStackPanel" Width="448">
-                                            <TextBlock x:Name="text" Text="{Binding DisplayContent}" TextWrapping="Wrap" Foreground="#FF4284D8" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Width="450" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
+                    <ListBox x:Name="trashListBox" ItemsSource="{Binding trashed}" HorizontalAlignment="Center" VerticalAlignment="Top" Height="537" Margin="12,0" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" SelectionChanged="trashedListBox_SelectionChanged" ItemTemplate="{StaticResource noteModelTemplate}"></ListBox>
 			</controls:PivotItem>
 		</controls:Pivot>
 		<TextBox x:Name="searchBox" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Margin="0,-5,0,0" Height="65" FontSize="21.333" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" TextChanged="searchBox_TextChanged" Visibility="Collapsed"/>
         <TextBlock x:Name="ApplicationTitle" Style="{StaticResource PhoneTextNormalStyle}" Foreground="#FF442424" FontFamily="Candara" Margin="23,16,12,0" Height="30" VerticalAlignment="Top"><Run Foreground ="#FF442424" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" Text="monkey"/><Run FontWeight="Bold" FontFamily="/MonkeyPad;component/Fonts/Fonts.zip#Candara" Text="Pad" Foreground="#FFCB862D" /><LineBreak/><Run/></TextBlock>
         <Grid x:Name="adGrid" Grid.Row="2" Height="Auto" VerticalAlignment="Bottom" Background="#FFF1F1F1">
-     <!--       <AldarIT_SuperAds:AdControl x:Name="Ads" VerticalAlignment="Bottom" TestMode="True" IsEnabled="False" Visibility="Collapsed" Stretch="Uniform" Height="60" Background="#FFF1F1F1" BorderBrush="#FFF1F1F1">
-                <AldarIT_SuperAds:AdControl.AdProviders>
-                    <AldarIT_SuperAds_AdProviders:AdmobAdProvider PublisherID="a14d782ece1426f"/>
-                    <AldarIT_SuperAds_AdProviders:SmaatoAdProvider AdSpaceID="0"/>
-                    <AldarIT_SuperAds_AdProviders:MobFoxAdProvider PublisherID="0e3ca65355a3c9b3febf28b85de5c761" />
-                    
-                </AldarIT_SuperAds:AdControl.AdProviders>
-            </AldarIT_SuperAds:AdControl>
-            <ads:AdControl Grid.Row="0" x:Name="uxAdControl"
-            ApplicationId="test_client" AdUnitId="Image480_80"  />-->
+
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

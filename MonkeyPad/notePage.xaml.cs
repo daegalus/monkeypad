@@ -59,9 +59,34 @@ namespace MonkeyPad
                 adAdded = true;
             }
             String noteKey = "";
+            String type = "";
             UpdateLayout();
             bool found = false;
-            if(NavigationContext.QueryString.TryGetValue("key", out noteKey))
+            if(NavigationContext.QueryString.TryGetValue("key", out noteKey) && NavigationContext.QueryString.TryGetValue("type", out type))
+            {
+                foreach (Models.tagModel tagItem in App.ViewModel.tags)
+                {
+                    if(tagItem.tagName == type)
+                    {
+                        foreach (Models.noteModel note in tagItem.notes)
+                        {
+                            if (note.Key == noteKey)
+                            {
+                                found = true;
+                                noteText.Text = note.Content;
+                                System.DateTime date = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+                                date = date.AddSeconds((double)note.CreateDate);
+                                dateText.Text = date.ToLongDateString();
+                                savedNote = note;
+                                if (note.Deleted) { list = "trash"; }
+                                else if (note.SystemTags.Length > 0 && note.SystemTags != null && note.SystemTags[0] == "Pinned") { list = "pinned"; }
+                                else { list = "notes"; }
+                            }
+                        }
+                    }
+                }
+            }
+            else if(NavigationContext.QueryString.TryGetValue("key", out noteKey))
             {
                 foreach (Models.noteModel note in App.ViewModel.notes)
                 {
@@ -161,6 +186,18 @@ namespace MonkeyPad
                 }
                 found = false;
             }
+            ListBox newListBox = new ListBox();
+            newListBox.ItemsSource = App.ViewModel.notes;
+            newListBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            newListBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            newListBox.Margin = new Thickness(12, 0, 0, 0);
+            newListBox.Height = 537;
+            //newListBox.ItemTemplate = noteModelTemplate;
+            //newListBox.ItemContainerStyle = ListBoxItemStyle1;
+            //newListBox.SelectionChanged += new SelectionChangedEventHandler(tagSelection);
+            newListBox.Name = "ListBox";
+            //LayoutRoot.Children.Clear();
+           // LayoutRoot.Children.Add(newListBox);
         }
 
         private void editButton_clicked(object sender, EventArgs e)
