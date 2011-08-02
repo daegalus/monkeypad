@@ -33,8 +33,9 @@ namespace MonkeyPad
                 /*adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
                 adControl.Width = 480;
                 adControl.Height = 80;*/
-                
-                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd {
+
+                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd
+                {
                     AdUnitID = "a14d80621cca948"
                 };
             }
@@ -62,11 +63,11 @@ namespace MonkeyPad
             String type = "";
             UpdateLayout();
             bool found = false;
-            if(NavigationContext.QueryString.TryGetValue("key", out noteKey) && NavigationContext.QueryString.TryGetValue("type", out type))
+            if (NavigationContext.QueryString.TryGetValue("key", out noteKey) && NavigationContext.QueryString.TryGetValue("type", out type))
             {
                 foreach (Models.tagModel tagItem in App.ViewModel.tags)
                 {
-                    if(tagItem.tagName == type)
+                    if (tagItem.tagName == type)
                     {
                         foreach (Models.noteModel note in tagItem.notes)
                         {
@@ -86,7 +87,7 @@ namespace MonkeyPad
                     }
                 }
             }
-            else if(NavigationContext.QueryString.TryGetValue("key", out noteKey))
+            else if (NavigationContext.QueryString.TryGetValue("key", out noteKey))
             {
                 foreach (Models.noteModel note in App.ViewModel.notes)
                 {
@@ -197,7 +198,7 @@ namespace MonkeyPad
             //newListBox.SelectionChanged += new SelectionChangedEventHandler(tagSelection);
             newListBox.Name = "ListBox";
             //LayoutRoot.Children.Clear();
-           // LayoutRoot.Children.Add(newListBox);
+            // LayoutRoot.Children.Add(newListBox);
         }
 
         private void editButton_clicked(object sender, EventArgs e)
@@ -210,7 +211,7 @@ namespace MonkeyPad
 
         private void pinButton_clicked(object sender, EventArgs e)
         {
-            
+
             if (!pinned && App.ViewModel.sendUpdateDone)
             {
                 App.ViewModel.sendUpdateDone = false;
@@ -301,7 +302,7 @@ namespace MonkeyPad
 
         private void updateUI(object sender, EventArgs e)
         {
-            
+
             if (savedNote != null && savedNote.SystemTags.Length > 0)
             {
                 ApplicationBarIconButton appButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
@@ -359,6 +360,6 @@ namespace MonkeyPad
             emailComposeTask.Subject = "[MonkeyPad Note] " + savedNote.DisplayTitle;
             emailComposeTask.Show();
         }
-                      
+
     }
 }

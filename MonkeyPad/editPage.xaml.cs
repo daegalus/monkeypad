@@ -24,7 +24,7 @@ namespace MonkeyPad
 {
     public partial class editView : PhoneApplicationPage
     {
-		Models.noteModel currentNote = null;
+        Models.noteModel currentNote = null;
         String createdJson = "";
         String returnedJson = "";
         String currentNoteBox = "";
@@ -42,10 +42,10 @@ namespace MonkeyPad
         {
             // Call the base implementation
             base.OnNavigatedTo(e);
-			var test = e.Uri;
+            var test = e.Uri;
             string noteKey = "";
             string list = "";
-            if(NavigationContext.QueryString.TryGetValue("key", out noteKey) && NavigationContext.QueryString.TryGetValue("list", out list))
+            if (NavigationContext.QueryString.TryGetValue("key", out noteKey) && NavigationContext.QueryString.TryGetValue("list", out list))
             {
                 if (list == "notes")
                 {
@@ -396,7 +396,7 @@ namespace MonkeyPad
             }
             catch (NullReferenceException eee)
             {
-                
+                System.Diagnostics.Debug.WriteLine(eee);
             }
         }
     }

@@ -82,37 +82,37 @@ namespace MonkeyPad
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            
-                IsolatedStorageSettings iss = IsolatedStorageSettings.ApplicationSettings;
-                if (iss.Contains("noteIndex"))
+
+            IsolatedStorageSettings iss = IsolatedStorageSettings.ApplicationSettings;
+            if (iss.Contains("noteIndex"))
+            {
+                App.ViewModel.noteIndex = (Models.noteIndexModel)iss["noteIndex"];
+                if (iss.Contains("vmNotes"))
                 {
-                    App.ViewModel.noteIndex = (Models.noteIndexModel)iss["noteIndex"];
-                    if (iss.Contains("vmNotes"))
-                    {
-                        App.ViewModel.notes = (Models.SortableObservableCollection<Models.noteModel>)iss["vmNotes"];
-                    }
-                    if (iss.Contains("vmPinned"))
-                    {
-                        App.ViewModel.pinned = (Models.SortableObservableCollection<Models.noteModel>)iss["vmPinned"];
-                    }
-                    if (iss.Contains("vmTrashed"))
-                    {
-                        App.ViewModel.trashed = (Models.SortableObservableCollection<Models.noteModel>)iss["vmTrashed"];
-                    }
-                    App.ViewModel.IsDataLoaded = true;
+                    App.ViewModel.notes = (Models.SortableObservableCollection<Models.noteModel>)iss["vmNotes"];
                 }
-                if (iss.Contains("authToken") && iss.Contains("email"))
+                if (iss.Contains("vmPinned"))
                 {
-                    App.ViewModel.IsLoggedIn = true;
-                    App.ViewModel.authToken = (String)iss["authToken"];
-                    App.ViewModel.email = (String)iss["email"];
-                    App.ViewModel.firstLoadLogin = true;
-                    App.ViewModel.HasBeenToLogin = true;
-                    App.ViewModel.HasEnteredLoginInfo = true;
-                    App.ViewModel.loading = false;
-                    App.ViewModel.alreadyAdded = false;
+                    App.ViewModel.pinned = (Models.SortableObservableCollection<Models.noteModel>)iss["vmPinned"];
                 }
-            
+                if (iss.Contains("vmTrashed"))
+                {
+                    App.ViewModel.trashed = (Models.SortableObservableCollection<Models.noteModel>)iss["vmTrashed"];
+                }
+                App.ViewModel.IsDataLoaded = true;
+            }
+            if (iss.Contains("authToken") && iss.Contains("email"))
+            {
+                App.ViewModel.IsLoggedIn = true;
+                App.ViewModel.authToken = (String)iss["authToken"];
+                App.ViewModel.email = (String)iss["email"];
+                App.ViewModel.firstLoadLogin = true;
+                App.ViewModel.HasBeenToLogin = true;
+                App.ViewModel.HasEnteredLoginInfo = true;
+                App.ViewModel.loading = false;
+                App.ViewModel.alreadyAdded = false;
+            }
+
         }
 
         // Code to execute when the application is activated (brought to foreground)

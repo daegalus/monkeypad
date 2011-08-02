@@ -42,10 +42,10 @@ namespace MonkeyPad
         public Models.SortableObservableCollection<Models.noteModel> pinned { get; set; }
         public Models.SortableObservableCollection<Models.noteModel> trashed { get; set; }
         public Models.SortableObservableCollection<Models.tagModel> tags { get; set; }
-        
+
         /* Other Variables */
-		public bool IsDataLoaded { get; set; }
-		public bool IsLoggedIn { get; set; }
+        public bool IsDataLoaded { get; set; }
+        public bool IsLoggedIn { get; set; }
         public bool HasBeenToLogin { get; set; }
         public bool HasEnteredLoginInfo { get; set; }
         public bool IsSorted { get; set; }
@@ -68,7 +68,7 @@ namespace MonkeyPad
         /* Login Info */
         public string authToken { get; set; }
         public string email = "";
-		public string base64login = "";
+        public string base64login = "";
 
         /* Date Arrays */
         public string[] Months = { "Invalid Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -105,7 +105,7 @@ namespace MonkeyPad
                                     }
                                     catch (InvalidOperationException e)
                                     {
-
+                                        System.Diagnostics.Debug.WriteLine(e);
                                     }
                                 }));
                             }));
@@ -129,7 +129,7 @@ namespace MonkeyPad
                                 }
                                 catch (InvalidOperationException e)
                                 {
-
+                                    System.Diagnostics.Debug.WriteLine(e);
                                 }
                             }));
                         }));
@@ -140,7 +140,7 @@ namespace MonkeyPad
             {
 
             }
-        
+
         }
 
         private IEnumerator<Int32> login(AsyncEnumerator asyncEnum)
@@ -275,7 +275,7 @@ namespace MonkeyPad
                 yield break;
             }
         }
-		
+
         private IEnumerator<Int32> getData(AsyncEnumerator asyncEnum)
         {
             String URL = "https://simple-note.appspot.com/api2/index?length=50&auth=" + authToken + "&email=" + email;
@@ -305,7 +305,7 @@ namespace MonkeyPad
             }
             catch (WebException ee)
             {
-                if(loginfailure)
+                if (loginfailure)
                 {
                     ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() =>
                     {
@@ -436,7 +436,7 @@ namespace MonkeyPad
                         noteObject = JsonConvert.DeserializeObject<Models.noteModel>(result);
 
                         System.DateTime date = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-                        String _title = "", _text = "", _temptext="";
+                        String _title = "", _text = "", _temptext = "";
                         String[] firstLines = noteObject.Content.Trim().Split('\n');
                         if (firstLines[0].Length >= 23)
                         {
@@ -458,7 +458,7 @@ namespace MonkeyPad
                         }
                         else if (_temptext.Length > 40)
                         {
-                            
+
                             _text = _temptext.Substring(0, 40).Trim() + "...";
                         }
                         else
@@ -618,11 +618,11 @@ namespace MonkeyPad
             }
         }
 
-		public void clearLists()
-		{
-			((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.notes.Clear(); });
-			((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.pinned.Clear(); });
-			((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.trashed.Clear(); });
+        public void clearLists()
+        {
+            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.notes.Clear(); });
+            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.pinned.Clear(); });
+            ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.trashed.Clear(); });
             ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.notes = new Models.SortableObservableCollection<Models.noteModel>(); });
             ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.pinned = new Models.SortableObservableCollection<Models.noteModel>(); });
             ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.trashed = new Models.SortableObservableCollection<Models.noteModel>(); });
@@ -636,7 +636,7 @@ namespace MonkeyPad
                 ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.markNoteIndex.Data.Clear(); });
                 ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => { this.markNoteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>(); this.markNoteIndex.Count = 0; });
             }
-		}
+        }
 
         public void sortAll()
         {
@@ -661,7 +661,7 @@ namespace MonkeyPad
                 IsSorted = true;
             }
             //((App)App.Current).RootFrame.Dispatcher.BeginInvoke(() => {  });
-            
+
 
         }
 
@@ -674,7 +674,7 @@ namespace MonkeyPad
                 if (item.Key == Key)
                 {
                     found = true;
-                    item.SystemTags = new string[1] {"pinned"};
+                    item.SystemTags = new string[1] { "pinned" };
                     workingItem = item;
                     ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((aItem) => { this.pinned.Add(aItem); }), item);
                     ((App)App.Current).RootFrame.Dispatcher.BeginInvoke(new Action<Models.noteModel>((aItem) => { this.notes.Remove(aItem); }), item);
@@ -834,13 +834,13 @@ namespace MonkeyPad
 
             string createdJson = JsonConvert.SerializeObject(pinUpdate, Formatting.None, jsonSettings);
             AsyncEnumerator asyncEnum = new AsyncEnumerator();
-            asyncEnum.BeginExecute(sendUpdateData(asyncEnum,createdJson,workingItem.Key), new AsyncCallback((result) =>
+            asyncEnum.BeginExecute(sendUpdateData(asyncEnum, createdJson, workingItem.Key), new AsyncCallback((result) =>
             {
                 asyncEnum.EndExecute(result);
                 Models.noteModel noteObject = JsonConvert.DeserializeObject<Models.noteModel>(returnedJson);
                 processResponse(noteObject, workingItem);
                 App.ViewModel.sendUpdateDone = true;
-            }));           
+            }));
         }
 
         private IEnumerator<Int32> sendUpdateData(AsyncEnumerator asyncEnum, string jsonBody, string Key)
@@ -1395,7 +1395,7 @@ namespace MonkeyPad
                     }
                     catch (InvalidOperationException e)
                     {
-
+                        System.Diagnostics.Debug.WriteLine(e);
                     }
                 }));
             }
@@ -1425,7 +1425,7 @@ namespace MonkeyPad
                         }
                         catch (InvalidOperationException e)
                         {
-
+                            System.Diagnostics.Debug.WriteLine(e);
                         }
                     }));
                 }));

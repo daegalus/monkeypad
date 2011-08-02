@@ -29,15 +29,17 @@ namespace MonkeyPad
         //AdControl adControl2 = null;
         //AldarIT.SuperAds.AdControl adControl = null;
         Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd adControl = null;
-        
+        DataTemplate test = new DataTemplate();
+        ListBox globalListBoxCopy = new ListBox();
+
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-
+            test = LayoutRoot.Resources["noteModelTemplate"] as DataTemplate;
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded +=new RoutedEventHandler(MainPage_Loaded);
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
             this.LayoutUpdated += new EventHandler(updateUIs);
             startLoadingBar();
             if (App.IsTrial())
@@ -45,8 +47,9 @@ namespace MonkeyPad
                 /*adControl = new AdControl("e1a0d7a1-5ba5-4395-bdaf-2a1707c25da8", "Image480_80", AdModel.Contextual, true);
                 adControl.Width = 480;
                 adControl.Height = 80;*/
-                
-                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd {
+
+                adControl = new Google.AdMob.Ads.WindowsPhone7.WPF.BannerAd
+                {
                     AdUnitID = "a14d80621cca948"
                 };
                 //adControl.TestDeviceIDs.Add("
@@ -68,7 +71,7 @@ namespace MonkeyPad
                 adControl.Height = 75;
                 adControl.Stretch = Stretch.Uniform;
                 adControl.TestMode = true;*/
-                
+
             }
             if (!App.ViewModel.IsDataLoaded)
             {
@@ -81,11 +84,11 @@ namespace MonkeyPad
         {
             if (App.IsTrial() && !adAdded)
             {
-               // Ads.IsEnabled = true;
-               // Ads.Visibility = System.Windows.Visibility.Visible;
+                // Ads.IsEnabled = true;
+                // Ads.Visibility = System.Windows.Visibility.Visible;
                 Grid grid = (Grid)this.LayoutRoot.Children[3];
                 grid.Children.Add(adControl);
-                System.Windows.Thickness margin = new System.Windows.Thickness(0,0,0,75);
+                System.Windows.Thickness margin = new System.Windows.Thickness(0, 0, 0, 75);
                 pivotContainer.Margin = margin;
                 adAdded = true;
             }
@@ -99,11 +102,11 @@ namespace MonkeyPad
                 App.ViewModel.HasBeenToLogin = true;
                 App.ViewModel.LoadData();
             }
-			else if (!App.ViewModel.IsLoggedIn && !App.ViewModel.HasBeenToLogin)
-			{
+            else if (!App.ViewModel.IsLoggedIn && !App.ViewModel.HasBeenToLogin)
+            {
                 App.ViewModel.loading = false;
-				NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
-			}
+                NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
+            }
             else if (App.ViewModel.HasEnteredLoginInfo && !App.ViewModel.IsDataLoaded && App.ViewModel.authToken != "")
             {
                 App.ViewModel.LoadData();
@@ -162,15 +165,16 @@ namespace MonkeyPad
 
         public void startLoadingBar()
         {
-            
+
             if (style == null) { throw new InvalidOperationException("The style was not found."); }
-            bar = new ProgressBar{
+            bar = new ProgressBar
+            {
                 IsIndeterminate = true,
                 Style = style,
-                Margin = new Thickness(1),
+                Margin = new Thickness(240, 5, 5, 5),
                 VerticalAlignment = System.Windows.VerticalAlignment.Top,
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
-                Width = 200,
+                Width = 240,
             };
         }
 
@@ -181,14 +185,14 @@ namespace MonkeyPad
 
         private void notesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			var listBox = sender as ListBox;
-			if (listBox.SelectedIndex > -1)
+            var listBox = sender as ListBox;
+            if (listBox.SelectedIndex > -1)
             {
                 Models.noteModel item = App.ViewModel.notes[listBox.SelectedIndex];
                 NavigationService.Navigate(new Uri("/notePage.xaml?key=" + item.Key, UriKind.Relative));
                 listBox.SelectedIndex = -1;
             }
-        	
+
         }
 
         private void pinnedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -209,6 +213,17 @@ namespace MonkeyPad
             {
                 Models.noteModel item = App.ViewModel.trashed[listBox.SelectedIndex];
                 NavigationService.Navigate(new Uri("/notePage.xaml?key=" + item.Key, UriKind.Relative));
+                listBox.SelectedIndex = -1;
+            }
+        }
+
+        private void tagsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            if (listBox.SelectedIndex > -1)
+            {
+                Models.tagModel item = App.ViewModel.tags[listBox.SelectedIndex];
+                NavigationService.Navigate(new Uri("/tagPage.xaml?name=" + item.tagName, UriKind.Relative));
                 listBox.SelectedIndex = -1;
             }
         }
@@ -236,13 +251,13 @@ namespace MonkeyPad
             if (App.ViewModel.noteIndex != null && App.ViewModel.noteIndex.Data != null)
             {
                 App.ViewModel.noteIndex.Data.Clear();
-                App.ViewModel.noteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>(); 
+                App.ViewModel.noteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>();
                 App.ViewModel.noteIndex.Count = 0;
             }
             if (App.ViewModel.markNoteIndex != null && App.ViewModel.markNoteIndex.Data != null)
             {
                 App.ViewModel.markNoteIndex.Data.Clear();
-                App.ViewModel.markNoteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>(); 
+                App.ViewModel.markNoteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>();
                 App.ViewModel.markNoteIndex.Count = 0;
             }
             notesListBox.ItemsSource = null;
@@ -370,7 +385,7 @@ namespace MonkeyPad
         {
             if (App.ViewModel.IsDataLoaded)
             {
-                
+
                 if (App.ViewModel.HasMore)
                 {
                     ApplicationBarIconButton appButton = (ApplicationBarIconButton)ApplicationBar.Buttons[2];
@@ -383,6 +398,8 @@ namespace MonkeyPad
                         pinnedListBox.ItemsSource = App.ViewModel.pinned;
                         trashListBox.ItemsSource = null;
                         trashListBox.ItemsSource = App.ViewModel.trashed;
+                        globalListBoxCopy.ItemsSource = null;
+                        globalListBoxCopy.ItemsSource = App.ViewModel.tags;
                         updateLists = false;
                     }
                 }
@@ -399,6 +416,8 @@ namespace MonkeyPad
                     pinnedListBox.ItemsSource = App.ViewModel.pinned;
                     trashListBox.ItemsSource = null;
                     trashListBox.ItemsSource = App.ViewModel.trashed;
+                    globalListBoxCopy.ItemsSource = null;
+                    globalListBoxCopy.ItemsSource = App.ViewModel.tags;
                     App.ViewModel.IsSorted = false;
                 }
             }
@@ -473,19 +492,21 @@ namespace MonkeyPad
             App.ViewModel.notes.Clear();
             App.ViewModel.pinned.Clear();
             App.ViewModel.trashed.Clear();
+            App.ViewModel.tags.Clear();
             App.ViewModel.notes = new Models.SortableObservableCollection<Models.noteModel>();
             App.ViewModel.pinned = new Models.SortableObservableCollection<Models.noteModel>();
             App.ViewModel.trashed = new Models.SortableObservableCollection<Models.noteModel>();
+            App.ViewModel.tags = new Models.SortableObservableCollection<Models.tagModel>();
             if (App.ViewModel.noteIndex != null && App.ViewModel.noteIndex.Data != null)
             {
                 App.ViewModel.noteIndex.Data.Clear();
-                App.ViewModel.noteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>(); 
+                App.ViewModel.noteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>();
                 App.ViewModel.noteIndex.Count = 0;
             }
             if (App.ViewModel.markNoteIndex != null && App.ViewModel.markNoteIndex.Data != null)
             {
                 App.ViewModel.markNoteIndex.Data.Clear();
-                App.ViewModel.markNoteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>(); 
+                App.ViewModel.markNoteIndex.Data = new Models.SortableObservableCollection<Models.noteModel>();
                 App.ViewModel.markNoteIndex.Count = 0;
             }
             notesListBox.ItemsSource = null;
@@ -494,6 +515,8 @@ namespace MonkeyPad
             pinnedListBox.ItemsSource = App.ViewModel.pinned;
             trashListBox.ItemsSource = null;
             trashListBox.ItemsSource = App.ViewModel.trashed;
+            globalListBoxCopy.ItemsSource = null;
+            globalListBoxCopy.ItemsSource = App.ViewModel.tags;
             ((App)App.Current).RootFrame.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
 
@@ -501,23 +524,23 @@ namespace MonkeyPad
         {
             MarketplaceDetailTask details = new MarketplaceDetailTask();
             details.ContentIdentifier = null;
-            details.Show(); 
+            details.Show();
         }
 
         private void tagButton_clicked(object sender, EventArgs e)
         {
-            
+
         }
 
         private void showTags()
         {
-            foreach(Models.tagModel tagItem in App.ViewModel.tags)
+            foreach (Models.tagModel tagItem in App.ViewModel.tags)
             {
                 tagItem.visible = true;
                 if (tagItem.visible)
                 {
                     PivotItem newTagPivot = new PivotItem();
-                    newTagPivot.Header = "#"+tagItem.tagName.ToLower();
+                    newTagPivot.Header = "#" + tagItem.tagName.ToLower();
                     newTagPivot.Margin = new Thickness(0, 8, 0, 0);
                     Color grey = new Color();
                     grey.A = 255;
@@ -531,11 +554,12 @@ namespace MonkeyPad
                     newListBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                     newListBox.Margin = new Thickness(12, 0, 0, 0);
                     newListBox.Height = 537;
-                    newListBox.ItemTemplate = noteModelTemplate;
+                    newListBox.ItemTemplate = this.Resources["noteModelTemplate"] as DataTemplate;
                     newListBox.ItemContainerStyle = ListBoxItemStyle1;
                     newListBox.SelectionChanged += new SelectionChangedEventHandler(tagSelection);
                     newListBox.Name = tagItem.tagName + "ListBox";
                     newTagPivot.Content = newListBox;
+                    globalListBoxCopy = newListBox;
                     pivotContainer.Items.Add(newTagPivot);
                 }
             }
@@ -548,14 +572,20 @@ namespace MonkeyPad
             {
                 foreach (Models.tagModel tagItem in App.ViewModel.tags)
                 {
-                    if (listBox.SelectedItem.Equals(tagItem))
+                    if (tagItem.tagName + "ListBox" == listBox.Name)
                     {
-                        Models.noteModel item = tagItem.notes[listBox.SelectedIndex];
-                        NavigationService.Navigate(new Uri("/notePage.xaml?key=" + item.Key + "&type=tag", UriKind.Relative));
+                        NavigationService.Navigate(new Uri("/notePage.xaml?key=" + tagItem.notes[listBox.SelectedIndex].Key + "&type=" + tagItem.tagName, UriKind.Relative));
                         listBox.SelectedIndex = -1;
                     }
                 }
             }
         }
+
+        private void settings_clicked(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

@@ -53,7 +53,8 @@
     <Reference Include="AldarIT.SuperAds">
       <HintPath>..\..\..\Libraries\AldarIT.SuperAds.dll</HintPath>
     </Reference>
-    <Reference Include="Google.AdMob.Ads.WindowsPhone7">
+    <Reference Include="Google.AdMob.Ads.WindowsPhone7, Version=4.0.1.27070, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\Google.AdMob.Ads.WindowsPhone7.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib.WindowsPhone">

@@ -4,6 +4,8 @@
 	xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 	xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:unsupported="clr-namespace:Microsoft.Phone.Controls.Unsupported"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+
 	x:Class="MonkeyPad.App">
 
 	<!--Application Resources-->
